@@ -3,9 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>chat</title>
 </head>
 <body>
     <h1>chat room</h1>
+
+    <form id="message-form">
+        <input name="message" placeholder="Message"></input>
+        <button>Send</button>
+    </form>
+
+    <button id="share-location">Share Location</button>
+   
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/chat.js"></script>
 </body>
 </html>
