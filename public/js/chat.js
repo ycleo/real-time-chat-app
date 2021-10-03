@@ -2,8 +2,8 @@ const socket = io()
 const messageForm = document.querySelector('#message-form')
 const sharedLocation = document.querySelector('#share-location')
 
-socket.on('serverMessage', (received_message) => {
-    console.log(received_message)
+socket.on('serverMessage', (receivedMsg) => {
+    console.log(receivedMsg)
 })
 
 messageForm.addEventListener('submit', (e) => {
@@ -11,7 +11,13 @@ messageForm.addEventListener('submit', (e) => {
 
     // const message = document.querySelector('input').value
     const message = e.target.elements.message.value
-    socket.emit('clientMessage', message)
+    socket.emit('clientMessage', message, (errorMsg) => {
+        if (errorMsg) {
+            return console.log(errorMsg)
+        }
+        
+        console.log('Message delivered!')
+    })
 })
 
 sharedLocation.addEventListener('click', () => {
@@ -24,6 +30,6 @@ sharedLocation.addEventListener('click', () => {
         socket.emit('shareLocation', {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
-        })
+        }, () => { console.log('Location shared!') })
     })
 })

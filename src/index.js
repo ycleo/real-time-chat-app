@@ -2,6 +2,7 @@ const path = require('path')
 const express = require('express')
 const http = require('http')
 const socketio = require('socket.io')
+const Filter = require('bad-words')
 
 // create server that support socket
 const app = express()
@@ -20,12 +21,21 @@ io.on('connection', (socket) => {
     socket.emit('serverMessage', 'Welcome!')
     socket.broadcast.emit('serverMessage', 'A new user has joined!')
 
-    socket.on('clientMessage', (message) => {
+    socket.on('clientMessage', (message, callback) => {
+        const filter = new Filter()
+        if (filter.isProfane(message)) {
+            // The callback function is defined by client side.
+            // But the argument is given by the server 
+            return callback('Profanity is not allowed!')
+        }
+        
         io.emit('serverMessage', message)
+        callback()
     })
 
-    socket.on('shareLocation', (coords) => {
+    socket.on('shareLocation', (coords, callback) => {
         io.emit('serverMessage', `https://google.com/maps?q=${coords.latitude},${coords.longitude}`)
+        callback() // Let the client know his or her location has been shared
     })
 
     socket.on('disconnect', () => {
