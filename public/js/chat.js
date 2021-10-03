@@ -4,9 +4,27 @@ const $messageForm = document.querySelector('#message-form')
 const $messageFormInput = $messageForm.querySelector('input')
 const $messageFormButton = $messageForm.querySelector('button')
 const $shareLocationButton = document.querySelector('#share-location')
+const $messages = document.querySelector('#messages')
+
+// Templates
+const messageTemplate = document.querySelector('#message-template').innerHTML
+const locationTemplate = document.querySelector('#location-template').innerHTML
 
 socket.on('serverMessage', (receivedMsg) => {
     console.log(receivedMsg)
+    const html = Mustache.render(messageTemplate, {
+        message: receivedMsg
+    })
+    $messages.insertAdjacentHTML('beforeend', html)
+})
+
+socket.on('locationMessage', (locationUrl) => {
+    console.log(locationUrl)
+
+    const html = Mustache.render(locationTemplate, {
+        url: locationUrl
+    })
+    $messages.insertAdjacentHTML('beforeend', html)
 })
 
 $messageForm.addEventListener('submit', (e) => {
@@ -42,7 +60,7 @@ $shareLocationButton.addEventListener('click', () => {
     }
 
     //disabel the sending button
-    $sharedLocationButton.setAttribute('disabled', 'disabled')
+    $shareLocationButton.setAttribute('disabled', 'disabled')
 
     navigator.geolocation.getCurrentPosition((position) => {
         // console.log(position)
@@ -51,7 +69,7 @@ $shareLocationButton.addEventListener('click', () => {
             longitude: position.coords.longitude
         }, () => { 
             // enable the sharing ability when server reply back
-            $sharedLocationButton.removeAttribute('disabled')
+            $shareLocationButton.removeAttribute('disabled')
             console.log('Location shared!') 
         })
     })

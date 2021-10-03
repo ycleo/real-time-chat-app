@@ -34,7 +34,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('shareLocation', (coords, callback) => {
-        io.emit('serverMessage', `https://google.com/maps?q=${coords.latitude},${coords.longitude}`)
+        io.emit('locationMessage', `https://google.com/maps?q=${coords.latitude},${coords.longitude}`)
         callback() // Let the client know his or her location has been shared
     })
 
