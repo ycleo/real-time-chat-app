@@ -1,4 +1,4 @@
-# <a href="https://real-time-chat-room-app.herokuapp.com/" target="_blank">Chat Room</a>
+# <a role="link" target="_blank" rel="noopener noreferrer" href="https://real-time-chat-room-app.herokuapp.com/">Chat Room</a>
 This is a real-time chat app.   
 
 1. Pick your display name and the room you want to join in!  
